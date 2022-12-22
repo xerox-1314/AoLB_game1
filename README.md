@@ -9,5 +9,6 @@
 
 
 Проект выполняют Жиликов Данил, Рыков Егор и всЁ.
-жиликов
+
+Ссылка на ТЗ: https://docs.google.com/document/d/151IQTI81J28ixU1ybskXIieDwfB1UIGzB0Ilnbtritk/edit
 

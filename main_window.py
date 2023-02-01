@@ -10,6 +10,7 @@ class MainWindow:
         self.height = height
         self.screen = pygame.display.set_mode((width, height))
 
+<<<<<<< HEAD
     def load_image(self, name, directory=None, colorkey=None):
         if directory is not None:
             fullname = os.path.join('data', directory, name)
@@ -17,6 +18,11 @@ class MainWindow:
             fullname = os.path.join('data', name)
         if not os.path.isfile(fullname):
             print(f"Файл с изображением '{fullname}' не найден")
+=======
+    def load_image(self, name, colorkey=None):
+        fullname = os.path.join('data', name)
+        if not os.path.isfile(fullname):
+>>>>>>> origin/main
             sys.exit()
         image = pygame.image.load(fullname)
         if colorkey is not None:
@@ -30,6 +36,7 @@ class MainWindow:
 
     def text_generation(self, text, size, color):
         font = pygame.font.Font('D:/Program Files/pycharmprograms/AoLB_game1/data/game_font.ttf', size)
+<<<<<<< HEAD
         text = font.render(text, False, color)
         return text
 
@@ -53,3 +60,14 @@ class Button:
 
     def check_click(self, x, y):
         return True if ((self.x <= x <= (self.x + self.width)) and (self.y <= y <= (self.y + self.height))) else False
+=======
+        text = font.render(text, True, color)
+        return text
+
+    def add_button(self, text, size, color_text, color_rect, x, y):
+        font = pygame.font.Font('D:/Program Files/pycharmprograms/AoLB_game1/data/game_font.ttf', size)
+        text = font.render(text, True, color_text)
+        pygame.draw.rect(self.screen, color_rect, (x - 10, y - 10, text.get_width() + 20, text.get_height() + 20), 0, 7)
+        self.screen.blit(text, (x, y))
+        return
+>>>>>>> origin/main

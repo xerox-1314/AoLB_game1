@@ -1,0 +1,9 @@
+Platform 60 150 2 2 0
+Platform 120 160 0 1 0
+Platform 180 120 3 0 1
+Spike 100
+Spike 250
+Spike 270
+Money 350 
+Money 370
+Win 400

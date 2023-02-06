@@ -34,10 +34,10 @@ class StartWindow(MainWindow):
         self.but_play = Button('Играть!', 35, (172, 64, 235), (233, 153, 236))
         self.but_play.show_button(self.screen, x_play, y_play)
 
-        text_store = self.text_generation('Магазин', 30, (224, 103, 184))
+        text_store = self.text_generation('Персонажи', 30, (224, 103, 184))
         x_store = self.width // 2 - text_store.get_width() // 2
         y_store = y_play + text_play.get_height() + 50
-        self.but_store = Button('Магазин', 30, (172, 64, 235), (233, 153, 236))
+        self.but_store = Button('Персонажи', 30, (172, 64, 235), (233, 153, 236))
         self.but_store.show_button(self.screen, x_store, y_store)
 
         text_exit = self.text_generation('Выйти', 30, (224, 103, 184))

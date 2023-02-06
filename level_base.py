@@ -8,11 +8,11 @@ import os
 
 
 SIZE = width, height = (600, 360)
+FPS = 30
 ground_height = 100
 hero_width, hero_height = 60, 90
 player_speed = 8
 
-pygame.init()
 window = MainWindow(*SIZE)
 sound = pygame.mixer.Sound('data/sounds/level1.mp3')
 sound_gameover = pygame.mixer.Sound('data/sounds/game_over.mp3')
@@ -22,7 +22,7 @@ money_sprites = pygame.sprite.Group()
 angry_sprites = pygame.sprite.Group()
 bullet_sprites = pygame.sprite.Group()
 spike_sprites = pygame.sprite.Group()
-door_sprites = pygame.sprite.Group()
+global_namefile = ''
 game_over = False
 win = False
 
@@ -47,6 +47,18 @@ def load_image(name, directory=None, colorkey=None):
 
 
 def level_generation(namefile):
+    global global_namefile
+    global platform_sprites
+    global money_sprites
+    global angry_sprites
+    global bullet_sprites
+    global spike_sprites
+    platform_sprites = pygame.sprite.Group()
+    money_sprites = pygame.sprite.Group()
+    angry_sprites = pygame.sprite.Group()
+    bullet_sprites = pygame.sprite.Group()
+    spike_sprites = pygame.sprite.Group()
+    global_namefile = namefile
     platform_dict = dict()
     angry_dict = dict()
     money_dict = dict()
@@ -67,6 +79,7 @@ def level_generation(namefile):
                 angry_dict[int(line[1])] = Angry(width + 5, height - ground_height - 60, angry_sprites)
             elif line[0] == 'Win':
                 win = int(line[1])
+    pygame.init()
     main(platform_dict, spike_dict, money_dict, angry_dict, win)
 
 
@@ -81,6 +94,7 @@ class Hero(pygame.sprite.Sprite):
         self.on_platform = False
         self.stop_x_left = -1
         self.stop_x_right = -1
+        self.mask = pygame.mask.from_surface(self.image)
 
     def update_x(self, value):
         global game_over
@@ -138,6 +152,7 @@ class Spike(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.mask = pygame.mask.from_surface(self.image)
 
     def move(self):
         self.rect.x -= 7
@@ -152,6 +167,7 @@ class Bullet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x_start
         self.rect.y = y_start
+        self.mask = pygame.mask.from_surface(self.image)
 
 
 class Money(pygame.sprite.Sprite):
@@ -163,6 +179,7 @@ class Money(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.mask = pygame.mask.from_surface(self.image)
 
     def move(self):
         self.rect.x -= 7
@@ -182,6 +199,7 @@ class Angry(pygame.sprite.Sprite):
     def move(self):
         self.rect.x -= 7
         if self.is_bullet is False and self.rect.x <= width:
+            print('is bullet true')
             self.is_bullet = True
             self.bullet = Bullet(self.rect.x, self.rect.y, bullet_sprites)
 
@@ -236,6 +254,7 @@ def main(platform_dict, spike_dict, money_dict, angry_dict, win_count):
     pygame.init()
     global win
     global game_over
+    global global_namefile
 
     sound.play()
     game_count = 0
@@ -288,7 +307,8 @@ def main(platform_dict, spike_dict, money_dict, angry_dict, win_count):
                         if reset_but.check_click(*event.pos):
                             game_over = False
                             run = False
-                            main(platform_dict, spike_dict, money_dict, angry_dict, win_count)
+                            print(global_namefile)
+                            level_generation(global_namefile)
                         elif exit_but.check_click(*event.pos):
                             SIZE = (500, 400)
                             pygame.display.set_mode(SIZE)
@@ -361,6 +381,8 @@ def main(platform_dict, spike_dict, money_dict, angry_dict, win_count):
             for item, value in platform_dict.items():
                 if item == game_count:
                     platform_list.append(value)
+                    if value.is_angry is True:
+                        angry_list.append(value.angry)
 
             for item, value in spike_dict.items():
                 if item == game_count:
@@ -394,8 +416,7 @@ def main(platform_dict, spike_dict, money_dict, angry_dict, win_count):
             spike_sprites.draw(window.screen)
             platform_sprites.draw(window.screen)
             money_sprites.draw(window.screen)
-            door_sprites.draw(window.screen)
             angry_sprites.draw(window.screen)
         pygame.display.flip()
-        time.tick(30)
+        time.tick(FPS)
     pygame.quit()

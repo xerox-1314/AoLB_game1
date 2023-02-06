@@ -57,6 +57,7 @@ class LevelsWindow(MainWindow):
 
 
 def main():
+    pygame.init()
     window = LevelsWindow(*SIZE)
     window.view_window()
     run = True
@@ -69,6 +70,7 @@ def main():
                     window.check_click(*event.pos)
 
     pygame.quit()
+
 
 if __name__ == '__main__':
     main()
